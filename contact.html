@@ -95,7 +95,7 @@
             <span>Have a question?</span>
             <h1>Contact Us</h1>
         </div>
-        <form action="">
+        <form id="contact-form" action="">
             <div class="input-field">
                 <label for="name">Name <sup>*</sup></label><br>
                 <input type="text" id="name" name="name" required>
@@ -137,7 +137,7 @@
                     if (xhr.status === 200) {
                         alert('Email sent successfully!');
                         // Optionally, reset the form after successful submission
-                        document.getElementById('contact').reset();
+                        document.getElementById('contact-form').reset();
                     } else {
                         alert('Failed to send email. Please try again later.');
                     }
