@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Image CRUD Node Controlled</title>
+  <title>File Controlled Image CRUD Node</title>
   <link rel="icon" href="crud.svg" type="image/png">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -12,6 +12,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <style>
+    /* Your CSS styles */
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
@@ -19,7 +20,7 @@
     }
 
     h1 {
-      color: #333;
+      color: #85147b;
     }
 
     form {
@@ -29,32 +30,6 @@
     ul {
       list-style: none;
       padding: 0;
-    }
-
-    li {
-      margin-bottom: 10px;
-      background-color: #fff;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-    }
-
-    button {
-      padding: 8px;
-      margin-left: 10px;
-      cursor: pointer;
-      background-color: #4285f4;
-      color: #fff;
-      border: none;
-      border-radius: 3px;
     }
 
     .confirmation-card {
@@ -76,23 +51,33 @@
       border-radius: 5px;
       display: none;
     }
+    
   </style>
 </head>
 <body>
-  <h1>Image CRUD</h1>
+  <div class="container">
+    <h1 class="text-center mt-5">Image CRUD</h1>
+    <a  class=" text-center mt-5" href="http://localhost:6868/contact"> Contact us</a>
+    <form id="imageForm" action="/upload" method="post" enctype="multipart/form-data" class="mt-4">
+      <div class="input-group">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="imageInput" name="image" accept="image/*" required>
+          <label class="custom-file-label" for="imageInput">Choose Image</label>
+        </div>
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="submit">Upload</button>
+        </div>
+      </div>
+    </form>
 
-  <form id="imageForm" action="/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="image" accept="image/*" required>
-    <button type="submit">Upload Image</button>
-  </form>
+    <!-- Confirmation card -->
+    <div class=" confirmation-card" id="confirmationCard" style="display: none;" role="alert">
+      Image uploaded successfully!
+    </div>
 
-  <!-- Confirmation card -->
-  <div class="confirmation-card" id="confirmationCard">
-    Image deleted successfully!
+    <h2 class="mt-5">Uploaded Images</h2>
+    <ul id="imageList" class="list-group"></ul>
   </div>
-
-  <h2>Uploaded Images</h2>
-  <ul id="imageList"></ul>
 
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script>
@@ -160,6 +145,12 @@
             // View button
             const viewButton = $('<button>').text('View').click(() => window.open(`/uploads/${image}`, '_blank'));
             listItem.append(viewButton);
+            
+             // Download button
+             const downloadButton = $('<button>').addClass('btn btn-success').text('Download').click(() => downloadImage(image));
+             listItem.append(downloadButton);
+         
+         
             // Delete button
             const deleteButton = $('<button>').addClass('btn btn-danger').text('Delete').click(() => alert(alert_msg, showConfirmation(image)));
             listItem.append(deleteButton);
@@ -169,6 +160,15 @@
           });
         });
     }
+
+         
+         // Function to download image
+         function downloadImage(image) {
+         const downloadLink = document.createElement('a');
+         downloadLink.href = `/uploads/${image}`;
+         downloadLink.download = image.filename;
+         downloadLink.click();
+         }
 
     // Function to show confirmation card
     function showConfirmation(image) {
