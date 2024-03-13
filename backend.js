@@ -21,6 +21,11 @@ const storage = multer.diskStorage({
   }
 });
 
+const html = `
+<h1 style="color:green"> Hello Guys </h1>
+<p> Vijay from Node mailer</p>
+`
+
 const upload = multer({ storage: storage });
 
 // Serve static files from the 'uploads' directory
@@ -94,6 +99,7 @@ app.post('/send-email', (req, res) => {
       to: recipients.join(', '), // Join recipient emails with comma
       subject: 'New Contact Form Submission',
       text: `
+      ${html}
           Name: ${name}
           Email: ${email}
           Phone Number: ${number}
