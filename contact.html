@@ -105,6 +105,11 @@
                 <input type="email" id="email" name="email" required>
             </div>
             <div class="input-field">
+                <input type="checkbox" id="sendCopy" name="sendCopy">
+                <label for="sendCopy">Check this box to get a mail copy for your mail ID</label>
+            </div>
+            
+            <div class="input-field">
                 <label for="number">Phone Number <sup>*</sup></label><br>
                 <input type="tel" id="number" name="number" maxlength="10" required>
             </div>
@@ -117,27 +122,30 @@
         </form>
     </section>
     <script>
-    function sendEmail() {
-        var name = document.getElementById('name').value;
-        var email = document.getElementById('email').value;
-        var number = document.getElementById('number').value;
-        var message = document.getElementById('message').value;
-        console.log("Submit clicked")
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/send-email', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                alert('Email sent successfully!');
-                // Optionally, reset the form after successful submission
-                document.getElementById('contact').reset();
-            } else if (xhr.readyState === 4 && xhr.status !== 200) {
-                alert('Failed to send email. Please try again later.');
-            }
-        };
-        var data = JSON.stringify({ name: name, email: email, number: number, message: message });
-        xhr.send(data);
-    }
+        function sendEmail() {
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var number = document.getElementById('number').value;
+            var message = document.getElementById('message').value;
+            var sendCopy = document.getElementById('sendCopy').checked;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/send-email', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        alert('Email sent successfully!');
+                        // Optionally, reset the form after successful submission
+                        document.getElementById('contact').reset();
+                    } else {
+                        alert('Failed to send email. Please try again later.');
+                    }
+                }
+            };
+            var data = JSON.stringify({ name: name, email: email, number: number, message: message, sendCopy: sendCopy });
+            xhr.send(data);
+        }
 </script>
 
 </body>

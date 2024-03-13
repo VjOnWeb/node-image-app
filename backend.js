@@ -80,19 +80,26 @@ const transporter = nodemailer.createTransport({
 
 // Route to handle form submission
 app.post('/send-email', (req, res) => {
-    const { name, email, number, message } = req.body;
+  const { name, email, number, message, sendCopy } = req.body;
 
-    const mailOptions = {
-        from: 'vijayanandvj1998@gmail.com',
-        to: 'vijayanandextra@gmail.com',
-        subject: 'New Contact Form Submission',
-        text: `
-            Name: ${name}
-            Email: ${email}
-            Phone Number: ${number}
-            Message: ${message}
-        `
-    };
+  // Array to store recipient emails
+  let recipients = ['vijayanandextra@gmail.com'];
+  // Add email to recipients if checkbox is checked
+  if (sendCopy) {
+      recipients.push(email);
+  }
+
+  const mailOptions = {
+      from: 'vijayanandvj1998@gmail.com',
+      to: recipients.join(', '), // Join recipient emails with comma
+      subject: 'New Contact Form Submission',
+      text: `
+          Name: ${name}
+          Email: ${email}
+          Phone Number: ${number}
+          Message: ${message}
+      `
+  };
     console.log("Success Message Sent :" + mailOptions.messageId);
 
 
