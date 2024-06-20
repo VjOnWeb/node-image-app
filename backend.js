@@ -78,8 +78,8 @@ const transporter = nodemailer.createTransport({
     port: 587,
     secure: false, // upgrade later with STARTTLS
     auth: {
-      user: "vijayanandvj1998@gmail.com",
-      pass: "ezjj lfjk mdlp xczg "
+      user: "mailId",  // implement .env feature
+      pass: "*******"  // .env pass
     },
   });
 
@@ -88,7 +88,7 @@ app.post('/send-email', (req, res) => {
   const { name, email, number, message, sendCopy } = req.body;
 
   // Array to store recipient emails
-  let recipients = ['vijayanandextra@gmail.com'];
+  let recipients = ['mailID@gmail.com'];
   // Add email to recipients if checkbox is checked
   if (sendCopy) {
       recipients.push(email);
